@@ -1,9 +1,41 @@
-/*
-Characteristics of a Pure Function
-1) They always return the same result if the same arguments are passed in.
-2) They depend only on the arguments passed into them.
-3) Never produce any side effects.
-*/
+// Library code
+function createStore(reducer) {
+    // The store should have four parts
+
+    // 1. The state
+    let state
+    let listeners = []
+
+    // 2. Get the state
+    const getState = () => state
+
+    // 3. Listen to changes on the state
+    const subscribe = (listener) => {
+        listeners.push(listener)
+        return () => {
+            listeners = listeners.filter((l) => l !== listener)
+        }
+    }
+
+    // 4. Update the state
+    const dispatch = (action) => {
+        state = reducer(state, action) // Update state
+        listeners.forEach((listener) => listener()) // Inform listeners of updated state
+    }
+
+    return {
+        getState,
+        subscribe,
+        dispatch
+    }
+}
+
+// App code
+const ADD_TODO = 'ADD_TODO'
+const REMOVE_TODO = 'REMOVE_TODO'
+const TOGGLE_TODO = 'TOGGLE_TODO'
+const ADD_GOAL = 'ADD_GOAL'
+const REMOVE_GOAL = 'REMOVE_GOAL'
 
 // Todos reducer function
 function todos(state = [], action) {
@@ -40,37 +72,6 @@ function app(state = {}, action) {
     }
 }
 
-function createStore(reducer) {
-    // The store should have four parts
-
-    // 1. The state
-    let state
-    let listeners = []
-
-    // 2. Get the state
-    const getState = () => state
-
-    // 3. Listen to changes on the state
-    const subscribe = (listener) => {
-        listeners.push(listener)
-        return () => {
-            listeners = listeners.filter((l) => l !== listener)
-        }
-    }
-
-    // 4. Update the state
-    const dispatch = (action) => {
-        state = reducer(state, action) // Update state
-        listeners.forEach((listener) => listener()) // Inform listeners of updated state
-    }
-
-    return {
-        getState,
-        subscribe,
-        dispatch
-    }
-}
-
 const store = createStore(app)
 
 store.subscribe(() => {
@@ -78,7 +79,7 @@ store.subscribe(() => {
 })
 
 store.dispatch({
-    type: 'ADD_TODO',
+    type: ADD_TODO,
     todo: {
         id: 0,
         name: 'Walk the dog',
@@ -87,7 +88,7 @@ store.dispatch({
 })
 
 store.dispatch({
-    type: 'ADD_TODO',
+    type: ADD_TODO,
     todo: {
         id: 1,
         name: 'Wash the car',
@@ -96,7 +97,7 @@ store.dispatch({
 })
 
 store.dispatch({
-    type: 'ADD_TODO',
+    type: ADD_TODO,
     todo: {
         id: 2,
         name: 'Go to the gym',
@@ -105,12 +106,12 @@ store.dispatch({
 })
 
 store.dispatch({
-    type: 'REMOVE_TODO',
+    type: REMOVE_TODO,
     id: 1
 })
 
 store.dispatch({
-    type: 'TOGGLE_TODO',
+    type: TOGGLE_TODO,
     id: 0
 })
 
@@ -123,7 +124,7 @@ store.dispatch({
 })
 
 store.dispatch({
-    type: 'ADD_GOAL',
+    type: ADD_GOAL,
     goal: {
         id: 1,
         name: 'Lose 20 pounds'
@@ -131,6 +132,6 @@ store.dispatch({
 })
 
 store.dispatch({
-    type: 'REMOVE_GOAL',
+    type: REMOVE_GOAL,
     id: 0
 }) 
