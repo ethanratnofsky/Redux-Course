@@ -1,3 +1,35 @@
+const addTodoAction = {
+    type: 'ADD_TODO',
+    todo: {
+        id: 0,
+        name: 'Learn Redux',
+        complete: false,
+    }
+}
+
+const removeTodoAction = {
+    type: 'REMOVE_TODO',
+    id: 0,
+}
+
+const toggleTodoAction = {
+    type: 'TOGGLE_TODO',
+    id: 0,
+}
+
+const addGoalAction = {
+    type: 'ADD_GOAL',
+    goal: {
+        id: 0,
+        name: 'Run a Marathon'
+    }
+}
+
+const removeGoalAction = {
+    type: 'REMOVE_GOAL',
+    id: 0
+}
+
 function createStore() {
     // The store should have four parts
 
