@@ -148,9 +148,20 @@
                 }
             }
 
+            // Loading reducer function
+            function loading (state = true, action) {
+                switch(action.type) {
+                    case RECEIVE_DATA : 
+                        return false
+                    default :
+                        return state
+                }
+            }
+
             const store = Redux.createStore(Redux.combineReducers({
                 todos,
                 goals,
+                loading,
             }), Redux.applyMiddleware(checker, logger))
 
             store.subscribe(() => {
@@ -338,7 +349,12 @@
                 }
                 render() {
                     const { store } = this.props
-                    const { todos, goals } = store.getState()
+                    const { todos, goals, loading } = store.getState()
+
+                    if (loading) {
+                        return <h3>LOADING</h3>
+                    }
+
                     return (
                         <div>
                             <Todos todos={todos} store={this.props.store} />
